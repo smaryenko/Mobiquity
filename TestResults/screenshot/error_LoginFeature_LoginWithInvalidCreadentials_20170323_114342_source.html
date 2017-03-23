@@ -1,0 +1,378 @@
+﻿<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml"><head lang="en"><style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\:form{display:block;}</style>
+  <meta charset="UTF-8" />
+  <title>AngularJS Starterkit</title>
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="css/custom.css" />
+  <!-- <link rel="stylesheet" type="text/css" href="css/bootstrap-systemaker.css" /> -->
+  <script type="text/javascript" src="js/angular.min.js"></script>
+  <script type="text/javascript" src="js/angular-route.min.js"></script>
+  <script type="text/javascript" src="js/angular-resource.min.js"></script>
+  <script type="text/javascript" src="js/app.js"></script>
+  <script type="text/javascript" src="js/main.js"></script>
+  <script type="text/javascript" src="js/ui-bootstrap-tpls-0.12.1.min.js"></script>
+  <script type="text/javascript" src="js/angular-translate.min.js"></script>
+  <script type="text/javascript" src="js/tmhDynamicLocale.js"></script>
+  <script type="text/javascript" src="js/dirPagination.js"></script>
+</head>
+<body ng-app="app" ng-controller="MainCtrl" class="ng-scope">
+<a name="Top"></a>
+<!-- MENU BAR -->
+        <nav class="navbar navbar-inverse navbar-fixed-top topnav" role="navigation">
+          <div class="container topnav">
+          <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+            <button type="button" class="navbar-toggle" ng-click="navbarCollapsed = !navbarCollapsed">
+            <span class="sr-only">Toggle navigation</span> 
+            <span class="icon-bar"></span> 
+            <span class="icon-bar"></span> 
+            <span class="icon-bar"></span></button> 
+              <a class="navbar-brand topnav ng-binding" href="#!items">
+                <!-- your branding here -->
+                <img height="24px" width="24px" ng-src="img/systemaker_icon.png" alt="icon" align="left" class="" src="img/systemaker_icon.png" />  AngularJS Starterkit
+              </a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" collapse="navbarCollapsed" style="height: 0px;">
+            <!-- your normal collapsable content here -->
+              <ul class="nav navbar-nav navbar-right">
+                <li ng-class="menuClass('items')" class="active"><a href="#!items" ng-click="addAlert()"><span translate="HOME" class="ng-scope">Home</span></a></li>
+                <li ng-class="menuClass('login')" ng-hide="loggedInUser" class="ng-hide"><a href="#!login">Login</a></li>
+                <li ng-class="menuClass('logout')" ng-show="loggedInUser" class=""><a href="#!logout">Logout</a></li>
+                <li ng-class="menuClass('help')"><a href="#!help"><span translate="HELP" class="ng-scope">Help</span></a></li>
+                <li class="btn-group" dropdown="" is-open="status.isopen">
+                  <a class="dropdown-toggle ng-binding" dropdown-toggle="" ng-disabled="disabled" aria-haspopup="true" aria-expanded="false"><img height="24px" width="24px" ng-src="img/flags/en.png" alt="icon" class="" src="img/flags/en.png" /> en lang<b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="" ng-click="changeLanguage('en')" class="btn ng-scope"><img height="32px" width="32px" src="img/flags/en.png" alt="icon" /> <span translate="BUTTON_LANG_EN" class="ng-scope">english</span></a></li>
+                    <li><a href="" ng-click="changeLanguage('fr')" class="btn ng-scope"><img height="32px" width="32px" src="img/flags/fr.png" alt="icon" /> <span translate="BUTTON_LANG_FR" class="ng-scope">french</span></a></li>
+                  </ul>
+                </li>
+              </ul>  
+            </div>
+          </div>
+        </nav>
+ <!-- Header -->
+ <a name="home"></a>
+ <div class="home">
+  <div class="container">
+
+<!-- <div ng-include src="partials/help.html"></div>  -->
+
+
+
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-10 col-lg-offset-1">
+    <!-- ngRepeat: alert in alerts --><div class="alert ng-isolate-scope alert-success alert-dismissable" ng-class="['alert-' + (type || 'warning'), closeable ? 'alert-dismissable' : null]" role="alert" ng-repeat="alert in alerts" type="success" close="closeAlert($index)">
+    <button ng-show="closeable" type="button" class="close" ng-click="close()">
+        <span aria-hidden="true">×</span>
+        <span class="sr-only">Close</span>
+    </button>
+    <div ng-transclude=""><span class="ng-binding ng-scope">successively logged in</span></div>
+</div><!-- end ngRepeat: alert in alerts -->
+      <!-- ngView: undefined --><ng-view class="ng-scope"><div ng-controller="IndexCtrl" class="ng-scope">
+ 
+  <!-- INTRODUCTION -->
+    <div class="well">
+        <h2 translate="TITLE" class="ng-scope">Single-page Application</h2>
+        <p translate="DESCRIPTION" class="ng-scope"><b>Features:</b> internationalization, pagination, filters, bootstrap ui and partial templates, flash message notifications, Authentication, Authorization, CRUD features and RestFull API services</p>
+    </div>
+
+
+
+      
+  <!-- ITEMS LIST -->  
+  <div class="page-header">
+      <!-- BUTTON ADD NEW ITEM -->
+    <div class="btn-group pull-right">
+      <a ng-click="newItem()" href="" class="btn btn-primary btn-sm">
+        <span class="glyphicon glyphicon-plus"></span>
+        Add new
+      </a>
+    </div>
+    <h2 id="tables">Items list</h2>
+  </div>    
+
+  <!-- ADD SEARCH FILTER BAR -->
+  <div class="navbar-form"> 
+
+    <div class="form-group">
+        <label>Search</label>
+        <div class="input-group">
+        <div class="input-group">
+          <span class="input-group-addon">
+            <span class="glyphicon glyphicon-search "></span>
+          </span>
+          <input type="text" ng-model="searchInput" class="form-control input-sm ng-pristine ng-untouched ng-valid" placeholder="Search" />
+        </div>
+          
+        
+    </div>
+    <!-- NESTED FILTER SELECT -->
+    <div class="form-group">
+      <label style="color:black;">Nested group: </label>
+      <select class="form-control input-sm ng-pristine ng-untouched ng-valid" ng-model="nestedGroup.id" ng-change="resetNestedGroup()" ng-options="n.id as n.title for n in nestedGroups"><option value="" ng-click="nestedGroup.id=''" class="">-- All --</option><option value="0" label="group1">group1</option><option value="1" label="group2">group2</option><option value="2" label="group3">group3</option><option value="3" label="group4">group4</option><option value="4" label="group5">group5</option></select>
+    </div> 
+    
+    
+    
+    <!-- PAGINATION -->
+    <div class="btn-group">
+      <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true" class="ng-isolate-scope"><!-- ngIf: 1 < pages.length --><ul class="pagination pagination-sm ng-scope" ng-if="1 &lt; pages.length">
+    <!-- ngIf: boundaryLinks --><li ng-if="boundaryLinks" ng-class="{ disabled : pagination.current == 1 }" class="ng-scope disabled">
+        <a href="" ng-click="setCurrent(1)">«</a>
+    </li><!-- end ngIf: boundaryLinks -->
+    <!-- ngIf: directionLinks --><li ng-if="directionLinks" ng-class="{ disabled : pagination.current == 1 }" class="ng-scope disabled">
+        <a href="" ng-click="setCurrent(pagination.current - 1)">‹</a>
+    </li><!-- end ngIf: directionLinks -->
+    <!-- ngRepeat: pageNumber in pages track by $index --><li ng-repeat="pageNumber in pages track by $index" ng-class="{ active : pagination.current == pageNumber, disabled : pageNumber == '...' }" class="ng-scope active">
+        <a href="" ng-click="setCurrent(pageNumber)" class="ng-binding">1</a>
+    </li><!-- end ngRepeat: pageNumber in pages track by $index --><li ng-repeat="pageNumber in pages track by $index" ng-class="{ active : pagination.current == pageNumber, disabled : pageNumber == '...' }" class="ng-scope">
+        <a href="" ng-click="setCurrent(pageNumber)" class="ng-binding">2</a>
+    </li><!-- end ngRepeat: pageNumber in pages track by $index --><li ng-repeat="pageNumber in pages track by $index" ng-class="{ active : pagination.current == pageNumber, disabled : pageNumber == '...' }" class="ng-scope">
+        <a href="" ng-click="setCurrent(pageNumber)" class="ng-binding">3</a>
+    </li><!-- end ngRepeat: pageNumber in pages track by $index -->
+
+    <!-- ngIf: directionLinks --><li ng-if="directionLinks" ng-class="{ disabled : pagination.current == pagination.last }" class="ng-scope">
+        <a href="" ng-click="setCurrent(pagination.current + 1)">›</a>
+    </li><!-- end ngIf: directionLinks -->
+    <!-- ngIf: boundaryLinks --><li ng-if="boundaryLinks" ng-class="{ disabled : pagination.current == pagination.last }" class="ng-scope">
+        <a href="" ng-click="setCurrent(pagination.last)">»</a>
+    </li><!-- end ngIf: boundaryLinks -->
+</ul><!-- end ngIf: 1 < pages.length --></dir-pagination-controls>
+    </div>
+
+
+  </div>  
+  
+  <table class="table   table-hover">
+    <thead>
+      <tr>
+        <th><a href="" ng-click="sort('id')">Id </a><span class="glyphicon sort-icon glyphicon-chevron-down ng-hide" ng-show="sortKey=='id'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+        <th><a href="" ng-click="sort('title_en')">Title </a><span class="glyphicon sort-icon glyphicon-chevron-down ng-hide" ng-show="sortKey=='title_en'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+        <th><a href="" ng-click="sort('parent_id')">Parent id </a><span class="glyphicon sort-icon glyphicon-chevron-down ng-hide" ng-show="sortKey=='parent_id'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+        <th><a href="" ng-click="sort('active')">Active </a><span class="glyphicon sort-icon glyphicon-chevron-down ng-hide" ng-show="sortKey=='active'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+        <th>Tools</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- ngRepeat: item in items | orderBy:sortKey:reverse | filter:searchInput | filter:{ parent_id: nestedGroup.id } | itemsPerPage:5 --><tr ng-show="items.length &gt; 0" class="ng-scope" ng-repeat="item in items | orderBy:sortKey:reverse | filter:searchInput | filter:{ parent_id: nestedGroup.id } | itemsPerPage:5">
+          <td class="ng-binding">6</td>
+          <td><a href="#!items/6" class="ng-binding"><!-- ngIf: item.active --><span class="glyphicon glyphicon-star ng-scope" ng-if="item.active"></span><!-- end ngIf: item.active --> Beauty-6</a></td>
+          <td><span class="badge ng-binding">1</span></td>
+          <td class="ng-binding">true</td>            
+          <td>
+            <!-- ************ ITEM CRUD TOOL ************  -->
+            <div class="btn-group btn-group-sm" dropdown="">
+              <button type="button" class="btn btn-default btn-sm dropdown-toggle" dropdown-toggle="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+               <span class="glyphicon glyphicon-wrench"></span>
+               admin
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li>
+                  <a ng-click="showItem(item.id)" href="" class="btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-eye-open"></span>
+                    show
+                  </a>
+                </li>
+                <li>
+                  <a ng-click="editItem(item.id)" href="" class="btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                    edit
+                  </a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                  <a rel="nofollow" href="" ng-really-click="deleteItem(item.id)" ng-really-message="Are you sure?" class="btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-trash"></span>
+                    delete
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </td>
+      
+      </tr><!-- end ngRepeat: item in items | orderBy:sortKey:reverse | filter:searchInput | filter:{ parent_id: nestedGroup.id } | itemsPerPage:5 --><tr ng-show="items.length &gt; 0" class="ng-scope" ng-repeat="item in items | orderBy:sortKey:reverse | filter:searchInput | filter:{ parent_id: nestedGroup.id } | itemsPerPage:5">
+          <td class="ng-binding">1</td>
+          <td><a href="#!items/1" class="ng-binding"><!-- ngIf: item.active --><span class="glyphicon glyphicon-star ng-scope" ng-if="item.active"></span><!-- end ngIf: item.active --> Computers-1</a></td>
+          <td><span class="badge ng-binding">1</span></td>
+          <td class="ng-binding">true</td>            
+          <td>
+            <!-- ************ ITEM CRUD TOOL ************  -->
+            <div class="btn-group btn-group-sm" dropdown="">
+              <button type="button" class="btn btn-default btn-sm dropdown-toggle" dropdown-toggle="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+               <span class="glyphicon glyphicon-wrench"></span>
+               admin
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li>
+                  <a ng-click="showItem(item.id)" href="" class="btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-eye-open"></span>
+                    show
+                  </a>
+                </li>
+                <li>
+                  <a ng-click="editItem(item.id)" href="" class="btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                    edit
+                  </a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                  <a rel="nofollow" href="" ng-really-click="deleteItem(item.id)" ng-really-message="Are you sure?" class="btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-trash"></span>
+                    delete
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </td>
+      
+      </tr><!-- end ngRepeat: item in items | orderBy:sortKey:reverse | filter:searchInput | filter:{ parent_id: nestedGroup.id } | itemsPerPage:5 --><tr ng-show="items.length &gt; 0" class="ng-scope" ng-repeat="item in items | orderBy:sortKey:reverse | filter:searchInput | filter:{ parent_id: nestedGroup.id } | itemsPerPage:5">
+          <td class="ng-binding">3</td>
+          <td><a href="#!items/3" class="ng-binding"><!-- ngIf: item.active --><span class="glyphicon glyphicon-star ng-scope" ng-if="item.active"></span><!-- end ngIf: item.active --> Industrial-3</a></td>
+          <td><span class="badge ng-binding">2</span></td>
+          <td class="ng-binding">true</td>            
+          <td>
+            <!-- ************ ITEM CRUD TOOL ************  -->
+            <div class="btn-group btn-group-sm" dropdown="">
+              <button type="button" class="btn btn-default btn-sm dropdown-toggle" dropdown-toggle="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+               <span class="glyphicon glyphicon-wrench"></span>
+               admin
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li>
+                  <a ng-click="showItem(item.id)" href="" class="btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-eye-open"></span>
+                    show
+                  </a>
+                </li>
+                <li>
+                  <a ng-click="editItem(item.id)" href="" class="btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                    edit
+                  </a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                  <a rel="nofollow" href="" ng-really-click="deleteItem(item.id)" ng-really-message="Are you sure?" class="btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-trash"></span>
+                    delete
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </td>
+      
+      </tr><!-- end ngRepeat: item in items | orderBy:sortKey:reverse | filter:searchInput | filter:{ parent_id: nestedGroup.id } | itemsPerPage:5 --><tr ng-show="items.length &gt; 0" class="ng-scope" ng-repeat="item in items | orderBy:sortKey:reverse | filter:searchInput | filter:{ parent_id: nestedGroup.id } | itemsPerPage:5">
+          <td class="ng-binding">4</td>
+          <td><a href="#!items/4" class="ng-binding"><!-- ngIf: item.active --><span class="glyphicon glyphicon-star ng-scope" ng-if="item.active"></span><!-- end ngIf: item.active --> Books-4</a></td>
+          <td><span class="badge ng-binding">2</span></td>
+          <td class="ng-binding">true</td>            
+          <td>
+            <!-- ************ ITEM CRUD TOOL ************  -->
+            <div class="btn-group btn-group-sm" dropdown="">
+              <button type="button" class="btn btn-default btn-sm dropdown-toggle" dropdown-toggle="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+               <span class="glyphicon glyphicon-wrench"></span>
+               admin
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li>
+                  <a ng-click="showItem(item.id)" href="" class="btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-eye-open"></span>
+                    show
+                  </a>
+                </li>
+                <li>
+                  <a ng-click="editItem(item.id)" href="" class="btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                    edit
+                  </a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                  <a rel="nofollow" href="" ng-really-click="deleteItem(item.id)" ng-really-message="Are you sure?" class="btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-trash"></span>
+                    delete
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </td>
+      
+      </tr><!-- end ngRepeat: item in items | orderBy:sortKey:reverse | filter:searchInput | filter:{ parent_id: nestedGroup.id } | itemsPerPage:5 --><tr ng-show="items.length &gt; 0" class="ng-scope" ng-repeat="item in items | orderBy:sortKey:reverse | filter:searchInput | filter:{ parent_id: nestedGroup.id } | itemsPerPage:5">
+          <td class="ng-binding">5</td>
+          <td><a href="#!items/5" class="ng-binding"><!-- ngIf: item.active --><span class="glyphicon glyphicon-star ng-scope" ng-if="item.active"></span><!-- end ngIf: item.active --> Baby-5</a></td>
+          <td><span class="badge ng-binding">1</span></td>
+          <td class="ng-binding">true</td>            
+          <td>
+            <!-- ************ ITEM CRUD TOOL ************  -->
+            <div class="btn-group btn-group-sm" dropdown="">
+              <button type="button" class="btn btn-default btn-sm dropdown-toggle" dropdown-toggle="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+               <span class="glyphicon glyphicon-wrench"></span>
+               admin
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li>
+                  <a ng-click="showItem(item.id)" href="" class="btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-eye-open"></span>
+                    show
+                  </a>
+                </li>
+                <li>
+                  <a ng-click="editItem(item.id)" href="" class="btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                    edit
+                  </a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                  <a rel="nofollow" href="" ng-really-click="deleteItem(item.id)" ng-really-message="Are you sure?" class="btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-trash"></span>
+                    delete
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </td>
+      
+      </tr><!-- end ngRepeat: item in items | orderBy:sortKey:reverse | filter:searchInput | filter:{ parent_id: nestedGroup.id } | itemsPerPage:5 -->
+    </tbody>
+  </table> 
+  <div ng-hide="items.length" class="ng-hide">
+      <strong>No items found, Please create one.</strong>
+  </div>
+</div>
+
+</div></ng-view>
+    </div>
+  </div>
+  
+  <div class="container container-fluid ng-binding">
+    <p class="pull-right">
+      <a href="#Top"><span class="glyphicon-class glyphicon glyphicon-chevron-up"></span> Top</a>
+    </p>
+    <hr />
+    <strong>Language : </strong> <span translate="LANGUAGE" class="ng-scope">en-us</span>
+    |
+    <strong>floating point number: </strong>1,234.567
+    |
+    <strong>currency format: </strong>$2,996.48
+    |
+    <strong>date format: </strong> Feb 9, 2015 9:34:00 AM
+    <hr />
+    <p>© 2015 <a href="/">AngularJS STarterkit !</a>  All Rights Reserved. | Powered by <a href="http://systemaker.com">Systemaker.com</a></p>  
+  </div>
+  
+  </div>
+</div>
+
+</body></html>
